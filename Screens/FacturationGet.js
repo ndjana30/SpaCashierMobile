@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Icon } from 'react-native-elements';
 import * as RNFS from 'react-native-fs';
 import { DataTable,Provider } from 'react-native-paper';
+import { USBPrinter, NetPrinter, BLEPrinter } from 'react-native-thermal-receipt-printer';
 
 
 export default function FacturationGet({navigation})
@@ -33,7 +34,20 @@ export default function FacturationGet({navigation})
   }, [itemsPerPage]);
 
 
-
+function print(ps)
+{
+    BLEPrinter.init();
+    BLEPrinter.getDeviceList()
+    .then(devices=>{
+        console.log(devices);
+    });
+    const printer = {
+        device_name: "BluetoothPrint",
+        inner_mac_address: "66:11:22:33:44:55"
+      };
+      BLEPrinter.connectPrinter(printer.inner_mac_address);
+      BLEPrinter.printText(ps);
+}
     return(
         <SafeAreaView>
             <View>
@@ -76,6 +90,7 @@ export default function FacturationGet({navigation})
                             console.log(response.data.products);
                             setProducts(response.data.products);
                             setTotal(response.data.total);
+                           print(products);
                         }).catch(error=>{
                             console.info(error);
                         })

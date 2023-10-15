@@ -3,12 +3,14 @@ import { useRoute } from "@react-navigation/native";
 import {Alert,View,Text,Image,SafeAreaView,TextInput,Button, StyleSheet, TouchableOpacity} from "react-native";
 import axios from 'axios';
 import { Icon } from 'react-native-elements';
+import { USBPrinter, NetPrinter, BLEPrinter } from 'react-native-thermal-receipt-printer';
 
 export default function ClientAdd({navigation})
 {
     
     const[username,setUsername]=useState('');
     const token = useRoute().params.token;
+    const[id,setId]=useState(0);
     
     const image=require('./logosvg/logo.jpg');
     const config = {
@@ -46,6 +48,20 @@ export default function ClientAdd({navigation})
                             const id=response.data.id
                             Alert.alert(`client \t ${username} \t added with number ${id}`);
                             setUsername('');
+                            const o = Number(id);
+                            setId(o);
+                            BLEPrinter.init();
+                BLEPrinter.getDeviceList()
+                .then(devices=>{
+                    console.log(devices);
+                });
+                const printer = {
+                    device_name: "BluetoothPrint",
+                    inner_mac_address: "66:11:22:33:44:55"
+                  };
+                  BLEPrinter.connectPrinter(printer.inner_mac_address);
+                  BLEPrinter.printText(`${id}`);
+
                         })
                         .catch(error=>{
                             console.info(error);
@@ -54,6 +70,8 @@ export default function ClientAdd({navigation})
                         <Text style={{textAlign:"center",textAlignVertical:"center",marginTop:6,color:"#FFF"}}>ADD</Text>
                     </TouchableOpacity>
                 </View>
+
+                
             </View>
         </SafeAreaView>
     )

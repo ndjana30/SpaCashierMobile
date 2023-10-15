@@ -3,7 +3,9 @@ import { useRoute } from "@react-navigation/native";
 import {Alert,View,Text,Image,SafeAreaView,TextInput,Button, StyleSheet, TouchableOpacity} from "react-native";
 import axios from 'axios';
 import { Icon } from 'react-native-elements';
+import { USBPrinter, NetPrinter, BLEPrinter } from 'react-native-thermal-receipt-printer';
 
+// import printer from 'react-native-pos-printer';
 
 export default function Login({navigation})
 {
@@ -65,6 +67,16 @@ export default function Login({navigation})
             </View>
             <View style={{marginTop:10,flexDirection:"row",padding:5,alignItems:'center',alignSelf:'center'}}>
                 <TouchableOpacity onPress={()=>{
+                    BLEPrinter.init()
+                    .then(()=>{
+                        BLEPrinter.getDeviceList()
+                        .then(devices=>{
+                            console.log(devices);
+                        })
+                        .catch(error=>{
+                            console.log(error);
+                        })
+                    })
                     
                     axios.post("https://spa-fq2z.onrender.com/api/v1/auth/cashier/login",
                     {
@@ -95,9 +107,10 @@ export default function Login({navigation})
                     })
                 }}
                 style={styles.Button}>
-                    <Text style={{textAlign:"center",textAlignVertical:"center",marginTop:6,color:"#FFF"}}>Login</Text>
+                    <Text style={{textAlign:"center",textAlignVertical:"center",marginTop:6,color:"#FFF"}}>Test Print</Text>
                 </TouchableOpacity>
             </View>
+            
             
         </View>
     </SafeAreaView>
