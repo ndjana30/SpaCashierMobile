@@ -3,7 +3,9 @@ import { useRoute } from "@react-navigation/native";
 import {Alert,View,Text,Image,SafeAreaView,TextInput,Button, StyleSheet, TouchableOpacity} from "react-native";
 import axios from 'axios';
 import { Icon } from 'react-native-elements';
-import { USBPrinter, NetPrinter, BLEPrinter } from 'react-native-thermal-receipt-printer';
+import { COMMANDS,BLEPrinter,ColumnAlignment } from 'react-native-thermal-receipt-printer-image-qr';
+
+// import { USBPrinter, NetPrinter, BLEPrinter } from 'react-native-thermal-receipt-printer';
 
 export default function ClientAdd({navigation})
 {
@@ -50,17 +52,30 @@ export default function ClientAdd({navigation})
                             setUsername('');
                             const o = Number(id);
                             setId(o);
-                            BLEPrinter.init();
-                BLEPrinter.getDeviceList()
-                .then(devices=>{
-                    console.log(devices);
-                });
-                const printer = {
-                    device_name: "BluetoothPrint",
-                    inner_mac_address: "66:11:22:33:44:55"
-                  };
-                  BLEPrinter.connectPrinter(printer.inner_mac_address);
-                  BLEPrinter.printText(`${id}`);
+                            const BOLD_ON = COMMANDS.TEXT_FORMAT.TXT_BOLD_ON;
+                    
+                
+                                const printer = {
+                                    device_name: "BluetoothPrint",
+                                    inner_mac_address: "66:11:22:33:44:55"
+                                  };
+                                  BLEPrinter.init();
+                                  BLEPrinter.connectPrinter(printer.inner_mac_address);
+                                  
+                                  BLEPrinter.printBill(`${BOLD_ON} ${id}`);
+                              
+                //             BLEPrinter.init();
+                // BLEPrinter.getDeviceList()
+                // .then(devices=>{
+                //     console.log(devices);
+                // });
+                // const printer = {
+                //     device_name: "BluetoothPrint",
+                //     inner_mac_address: "66:11:22:33:44:55"
+                //   };
+                //   BLEPrinter.connectPrinter(printer.inner_mac_address);
+                // //   BLEPrinter.printText(`\n \n \n \n \n \n \n \n \n \n ${id} \n \n \n \n \n \n \n \n \n \n`);
+                //   BLEPrinter.printBill(`<C> HELLOOOOOOO ${id}</C>`)
 
                         })
                         .catch(error=>{

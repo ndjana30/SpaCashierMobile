@@ -3,8 +3,7 @@ import { useRoute } from "@react-navigation/native";
 import {Alert,View,Text,Image,SafeAreaView,TextInput,Button, StyleSheet, TouchableOpacity} from "react-native";
 import axios from 'axios';
 import { Icon } from 'react-native-elements';
-import { USBPrinter, NetPrinter, BLEPrinter } from 'react-native-thermal-receipt-printer';
-
+import { COMMANDS,BLEPrinter,ColumnAlignment } from 'react-native-thermal-receipt-printer-image-qr';
 // import printer from 'react-native-pos-printer';
 
 export default function Login({navigation})
@@ -17,6 +16,7 @@ export default function Login({navigation})
     const image=require('./logosvg/logo.jpg');
     var RNFS = require('react-native-fs');
     var path = RNFS.DocumentDirectoryPath + '/token.txt';
+    
 
     const config = {
         headers: { Authorization: jwtToken }
@@ -67,16 +67,33 @@ export default function Login({navigation})
             </View>
             <View style={{marginTop:10,flexDirection:"row",padding:5,alignItems:'center',alignSelf:'center'}}>
                 <TouchableOpacity onPress={()=>{
-                    BLEPrinter.init()
-                    .then(()=>{
-                        BLEPrinter.getDeviceList()
-                        .then(devices=>{
-                            console.log(devices);
-                        })
-                        .catch(error=>{
-                            console.log(error);
-                        })
-                    })
+                        
+                                //   const printerOptions = {
+                                //     align: 'center',
+                                //     bold: true,
+                                //     underline: false,
+                                //     reverse: false,
+                                //     font: 'large',
+                                //   };
+                                  
+                                //   BLEPrinter.init();
+                                //   BLEPrinter.connectPrinter(printer.inner_mac_address);
+                                //   BLEPrinter.printText("<C>TEXT</C>");
+                                // RNFS.readFile(image, 'base64')
+                                // .then(res=>{
+                                //     BLEPrinter.printBill(res);
+                                //     console.log(res);
+                                // })
+                                // .catch(error=>
+                                //     {
+                                //         console.info(error);
+                                //     })
+                                
+                            
+                           
+                        
+                        
+                
                     
                     axios.post("https://spa-fq2z.onrender.com/api/v1/auth/cashier/login",
                     {
@@ -107,7 +124,7 @@ export default function Login({navigation})
                     })
                 }}
                 style={styles.Button}>
-                    <Text style={{textAlign:"center",textAlignVertical:"center",marginTop:6,color:"#FFF"}}>Test Print</Text>
+                    <Text style={{textAlign:"center",textAlignVertical:"center",marginTop:6,color:"#FFF"}}>Login</Text>
                 </TouchableOpacity>
             </View>
             
